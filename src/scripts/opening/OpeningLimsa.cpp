@@ -132,6 +132,10 @@ public:
   void onWithinRange( Entity::Player& player, uint32_t eventId, uint32_t param1, float x, float y, float z ) override
   {
     // todo: handle closed events
+    //if( param1 == ERANGE_ALWAYS_CLOSED_1 || param1 == ERANGE_ALWAYS_CLOSED_2 || param1 == ERANGE_ALWAYS_CLOSED_3 || param1 == ERANGE_ALWAYS_CLOSED_4 || param1 == ERANGE_ALWAYS_CLOSED_5 || param1 == ERANGE_ALWAYS_CLOSED_6 )
+    //{
+      //Scene00020( player );
+    //}
   }
 };
 
