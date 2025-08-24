@@ -48,7 +48,6 @@ class ManSea001 : public Sapphire::ScriptAPI::QuestScript
     static constexpr auto OpeningEventHandler = 1245185;
     static constexpr auto Poprange0 = 4127803;
     static constexpr auto Territorytype0 = 181;
-    static constexpr auto Territorytype1 = 128;
 
     void checkQuestCompletion( World::Quest& quest, Entity::Player& player )
     {
@@ -184,7 +183,7 @@ class ManSea001 : public Sapphire::ScriptAPI::QuestScript
       quest.setBitFlag8( 1, true );
       checkQuestCompletion( quest, player );
       eventMgr().eventFinish( player, result.eventId, 1 );
-      warpMgr().requestMoveTerritoryType( player, Common::WarpType::WARP_TYPE_NORMAL, Territorytype0, { 9.0f, 40.0f, 14.0f }, 0.0f );
+      warpMgr().requestMoveTerritory( player, Common::WarpType::WARP_TYPE_NORMAL, teriMgr().getTerritoryByTypeId( 181 )->getGuId(), { 9.0f, 40.0f, 14.0f }, 0.0f );
     }
   }
 
@@ -281,7 +280,7 @@ class ManSea001 : public Sapphire::ScriptAPI::QuestScript
       if( questMgr.giveQuestRewards( player, getId(), 0 ) )
         player.finishQuest( getId(), result.getResult( 1 ) );
       eventMgr().eventFinish( player, result.eventId, 1 );
-      warpMgr().requestMoveTerritoryType( player, Common::WarpType::WARP_TYPE_NORMAL, Territorytype1, { 18.0f, 40.3f, -5.4f }, 0.0f );
+      warpMgr().requestMoveTerritoryType( player, Common::WarpType::WARP_TYPE_NORMAL, 128, { 18.0f, 40.3f, -5.4f }, 0.0f );
     }
 
   }
