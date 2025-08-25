@@ -6,7 +6,6 @@
 #include "Manager/EventMgr.h"
 #include <ScriptObject.h>
 #include <Service.h>
-#include "Manager/QuestMgr.h"
 
 // Quest Script: ClsAcn011_00452
 // Quest Name: Way of the Arcanist
@@ -59,7 +58,7 @@ class ClsAcn011 : public Sapphire::ScriptAPI::QuestScript
       case Actor1:
       {
         if( quest.getSeq() == SeqFinish )
-          Scene00001( quest, player );
+          Scene00002( quest, player );
         break;
       }
     }
@@ -73,14 +72,14 @@ class ClsAcn011 : public Sapphire::ScriptAPI::QuestScript
 
   void Scene00000( World::Quest& quest, Entity::Player& player )
   {
-    eventMgr().playQuestScene( player, getId(), 0, NONE, bindSceneReturn( &ClsAcn011::Scene00000Return ) );
+    eventMgr().playQuestScene( player, getId(), 0, HIDE_HOTBAR, bindSceneReturn( &ClsAcn011::Scene00000Return ) );
   }
 
   void Scene00000Return( World::Quest& quest, Entity::Player& player, const Event::SceneResult& result )
   {
     if( result.getResult( 0 ) == 1 ) // accept quest
     {
-      quest.setSeq( SeqFinish );
+      Scene00001( quest, player );
     }
 
 
@@ -90,13 +89,12 @@ class ClsAcn011 : public Sapphire::ScriptAPI::QuestScript
 
   void Scene00001( World::Quest& quest, Entity::Player& player )
   {
-    //eventMgr().playQuestScene( player, getId(), 1, NONE, bindSceneReturn( &ClsAcn011::Scene00001Return ) );
-    eventMgr().playScene( player, getId(), 1, NONE );
+    eventMgr().playQuestScene( player, getId(), 1, HIDE_HOTBAR, bindSceneReturn( &ClsAcn011::Scene00001Return ) );
   }
 
   void Scene00001Return( World::Quest& quest, Entity::Player& player, const Event::SceneResult& result )
   {
-
+      quest.setSeq( SeqFinish );
   }
 
   //////////////////////////////////////////////////////////////////////
@@ -109,11 +107,11 @@ class ClsAcn011 : public Sapphire::ScriptAPI::QuestScript
   void Scene00002Return( World::Quest& quest, Entity::Player& player, const Event::SceneResult& result )
   {
 
-    if( result.getResult( 0 ) == 1 )
+    if( result.getResult( 0 ) == 1 ) // Said yes in cutscene
     {
-      auto questMgr = Common::Service< World::Manager::QuestMgr >::ref();
-      if( questMgr.giveQuestRewards( player, getId(), 0 ) )
-        player.finishQuest( getId(), result.getResult( 1 ) );
+      player.finishQuest( getId(), result.getResult( 1 ) );
+      player.setLevelForClass( 1, Sapphire::Common::ClassJob::Arcanist );
+      player.addGearSet();
     }
 
   }

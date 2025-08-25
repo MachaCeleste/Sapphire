@@ -6,7 +6,6 @@
 #include "Manager/EventMgr.h"
 #include <ScriptObject.h>
 #include <Service.h>
-#include "Manager/QuestMgr.h"
 
 // Quest Script: ClsGla011_00285
 // Quest Name: Way of the Gladiator
@@ -82,8 +81,6 @@ class ClsGla011 : public Sapphire::ScriptAPI::QuestScript
     {
       quest.setSeq( SeqFinish );
     }
-
-
   }
 
   //////////////////////////////////////////////////////////////////////
@@ -96,15 +93,11 @@ class ClsGla011 : public Sapphire::ScriptAPI::QuestScript
   void Scene00001Return( World::Quest& quest, Entity::Player& player, const Event::SceneResult& result )
   {
 
-    if( result.getResult( 0 ) == 1 )
+    if( result.getResult( 0 ) == 1 ) // Say yes in cutscene
     {
-      auto questMgr = Common::Service< World::Manager::QuestMgr >::ref();
-      if( questMgr.giveQuestRewards( player, getId(), 0 ) )
-        player.finishQuest( getId(), result.getResult( 1 ) );
-      
-      //player.finishQuest( getId() );
-      //player.setLevelForClass( 1, Sapphire::Common::ClassJob::Gladiator );
-      //player.addGearSet();
+      player.finishQuest( getId(), result.getResult( 1 ) );
+      player.setLevelForClass( 1, Sapphire::Common::ClassJob::Gladiator );
+      player.addGearSet();
     }
 
   }

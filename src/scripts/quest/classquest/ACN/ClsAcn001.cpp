@@ -51,13 +51,15 @@ class ClsAcn001 : public Sapphire::ScriptAPI::QuestScript
 
   void Scene00000( World::Quest& quest, Entity::Player& player )
   {
-    eventMgr().playQuestScene( player, getId(), 0, NONE, bindSceneReturn( &ClsAcn001::Scene00000Return ) );
+    eventMgr().playQuestScene( player, getId(), 0, HIDE_HOTBAR, bindSceneReturn( &ClsAcn001::Scene00000Return ) );
   }
 
   void Scene00000Return( World::Quest& quest, Entity::Player& player, const Event::SceneResult& result )
   {
-    if( result.getResult( 0 ) == 1 )// Say yes
-      player.finishQuest( getId(), 0 );
+    if( result.getResult( 0 ) == 1 ) // accept quest
+    {
+        player.finishQuest( getId(), 0 );
+    }
   }
 
 };

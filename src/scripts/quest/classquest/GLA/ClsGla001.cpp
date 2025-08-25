@@ -27,7 +27,7 @@ class ClsGla001 : public Sapphire::ScriptAPI::QuestScript
     {
     };
 
-    static constexpr auto Actor0 = 1002277;//Lulutsu
+    static constexpr auto Actor0 = 1002277; // Lulutsu ( Pos: -97.520401 6.973330 23.605700  Teri: 131 )
 
     // Entities found in the script data of the quest
 
@@ -56,8 +56,10 @@ class ClsGla001 : public Sapphire::ScriptAPI::QuestScript
 
   void Scene00000Return( World::Quest& quest, Entity::Player& player, const Event::SceneResult& result )
   {
-    if( result.getResult( 0 ) == 1 )// Say yes
+    if( result.getResult( 0 ) == 1 ) // accept quest
+    {
       player.finishQuest( getId(), 0 );
+    }
   }
 
 };

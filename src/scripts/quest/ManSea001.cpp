@@ -6,7 +6,6 @@
 #include "Manager/EventMgr.h"
 #include <ScriptObject.h>
 #include <Service.h>
-#include "Manager/QuestMgr.h"
 
 // Quest Script: ManSea001_00107
 // Quest Name: Coming to Limsa Lominsa
@@ -112,8 +111,6 @@ class ManSea001 : public Sapphire::ScriptAPI::QuestScript
     {
       Scene00001( quest, player );
     }
-
-
   }
 
   //////////////////////////////////////////////////////////////////////
@@ -138,33 +135,8 @@ class ManSea001 : public Sapphire::ScriptAPI::QuestScript
   void Scene00002Return( World::Quest& quest, Entity::Player& player, const Event::SceneResult& result )
   {
     player.setOpeningSequence( 2 );
+    checkQuestCompletion( quest, player );
     quest.setSeq( Seq1 );
-  }
-
-  //////////////////////////////////////////////////////////////////////
-
-  void Scene00003( World::Quest& quest, Entity::Player& player )
-  {
-    eventMgr().playQuestScene( player, getId(), 3, NONE, bindSceneReturn( &ManSea001::Scene00003Return ) );
-  }
-
-  void Scene00003Return( World::Quest& quest, Entity::Player& player, const Event::SceneResult& result )
-  {
-
-
-  }
-
-  //////////////////////////////////////////////////////////////////////
-
-  void Scene00004( World::Quest& quest, Entity::Player& player )
-  {
-    eventMgr().playQuestScene( player, getId(), 4, NONE, bindSceneReturn( &ManSea001::Scene00004Return ) );
-  }
-
-  void Scene00004Return( World::Quest& quest, Entity::Player& player, const Event::SceneResult& result )
-  {
-
-
   }
 
   //////////////////////////////////////////////////////////////////////
@@ -177,7 +149,7 @@ class ManSea001 : public Sapphire::ScriptAPI::QuestScript
   void Scene00005Return( World::Quest& quest, Entity::Player& player, const Event::SceneResult& result )
   {
 
-    if (result.getResult(0) == 1) // say yes to lift attendant
+    if ( result.getResult( 0 ) == 1 ) // say yes to lift attendant
     {
       quest.setUI8AL( 1 );
       quest.setBitFlag8( 1, true );
@@ -185,19 +157,6 @@ class ManSea001 : public Sapphire::ScriptAPI::QuestScript
       eventMgr().eventFinish( player, result.eventId, 1 );
       warpMgr().requestMoveTerritory( player, Common::WarpType::WARP_TYPE_NORMAL, teriMgr().getTerritoryByTypeId( 181 )->getGuId(), { 9.0f, 40.0f, 14.0f }, 0.0f );
     }
-  }
-
-  //////////////////////////////////////////////////////////////////////
-
-  void Scene00006( World::Quest& quest, Entity::Player& player )
-  {
-    eventMgr().playQuestScene( player, getId(), 6, NONE, bindSceneReturn( &ManSea001::Scene00006Return ) );
-  }
-
-  void Scene00006Return( World::Quest& quest, Entity::Player& player, const Event::SceneResult& result )
-  {
-
-
   }
 
   //////////////////////////////////////////////////////////////////////
@@ -215,19 +174,6 @@ class ManSea001 : public Sapphire::ScriptAPI::QuestScript
 
   //////////////////////////////////////////////////////////////////////
 
-  void Scene00008( World::Quest& quest, Entity::Player& player )
-  {
-    eventMgr().playQuestScene( player, getId(), 8, NONE, bindSceneReturn( &ManSea001::Scene00008Return ) );
-  }
-
-  void Scene00008Return( World::Quest& quest, Entity::Player& player, const Event::SceneResult& result )
-  {
-
-
-  }
-
-  //////////////////////////////////////////////////////////////////////
-
   void Scene00009( World::Quest& quest, Entity::Player& player )
   {
     eventMgr().playQuestScene( player, getId(), 9, NONE, bindSceneReturn( &ManSea001::Scene00009Return ) );
@@ -237,19 +183,6 @@ class ManSea001 : public Sapphire::ScriptAPI::QuestScript
   {
     playerMgr().sendDebug( player, "ManSea001:65643 calling Scene00009: Normal(None), id=unknown" );
     checkQuestCompletion( quest, player );
-  }
-
-  //////////////////////////////////////////////////////////////////////
-
-  void Scene00010( World::Quest& quest, Entity::Player& player )
-  {
-    eventMgr().playQuestScene( player, getId(), 10, NONE, bindSceneReturn( &ManSea001::Scene00010Return ) );
-  }
-
-  void Scene00010Return( World::Quest& quest, Entity::Player& player, const Event::SceneResult& result )
-  {
-
-
   }
 
   //////////////////////////////////////////////////////////////////////
@@ -276,11 +209,7 @@ class ManSea001 : public Sapphire::ScriptAPI::QuestScript
 
     if( result.getResult( 0 ) == 1 )
     {
-      auto questMgr = Common::Service< World::Manager::QuestMgr >::ref();
-      if( questMgr.giveQuestRewards( player, getId(), 0 ) )
-        player.finishQuest( getId(), result.getResult( 1 ) );
-      eventMgr().eventFinish( player, result.eventId, 1 );
-      warpMgr().requestMoveTerritoryType( player, Common::WarpType::WARP_TYPE_NORMAL, 128, { 18.0f, 40.3f, -5.4f }, 0.0f );
+      player.finishQuest( getId(), result.getResult( 1 ) );
     }
 
   }
@@ -294,8 +223,11 @@ class ManSea001 : public Sapphire::ScriptAPI::QuestScript
 
   void Scene00013Return( World::Quest& quest, Entity::Player& player, const Event::SceneResult& result )
   {
-    //eventMgr().eventFinish( player, result.eventId, 1 );
-    //warpMgr().requestMoveTerritory( player, Common::WarpType::WARP_TYPE_NORMAL, Territorytype0 );
+    if ( result.getResult( 0 ) == 1 )
+    {
+      eventMgr().eventFinish( player, result.eventId, 1 );
+      warpMgr().requestMoveTerritory( player, Common::WarpType::WARP_TYPE_NORMAL, teriMgr().getTerritoryByTypeId( 181 )->getGuId(), { 9.0f, 40.0f, 14.0f }, 0.0f );
+    }
   }
 
 };
